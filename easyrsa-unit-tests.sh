@@ -1195,7 +1195,7 @@ create_pki ()
 
 	fi
 
-	export EASYRSA_PKI="$TEMP_DIR/sel-sign"
+	export EASYRSA_PKI="$TEMP_DIR/self-sign"
 	vvverbose "* EASYRSA_PKI: $EASYRSA_PKI"
 	init_pki
 	create_self_sign
@@ -1215,6 +1215,11 @@ create_pki ()
 
 ######################################
 
+	# accept 'set -e' is not perfect, it works well enough
+	# Allow selective use of 'set -e'
+	if [ "$EASYRSA_SET_ERREXIT" ]; then
+		set -e || die "Cannot set -e"
+	fi
 
 	#if git log -1 | grep ChangeLog; then
 	#	: # exit 0
@@ -1233,7 +1238,7 @@ create_pki ()
 	trap "failed 6" 6
 	trap "failed 15" 15
 
-	export ERSA_UTEST_VERSION="3.2.2"
+	export ERSA_UTEST_VERSION="3.2.6"
 
 	# Options
 	while [ "$1" ]
